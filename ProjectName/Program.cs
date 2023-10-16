@@ -1,7 +1,17 @@
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder
+    .Services
+    .AddAuthentication("CookieAuthTest")
+    .AddCookie("CookieAuthTest", options =>
+{
+    options.Cookie.Name = "MyCookie";
+});
 
 var app = builder.Build();
 
@@ -15,6 +25,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseAuthentication();
 
 app.UseRouting();
 

@@ -1,31 +1,40 @@
 ﻿@page
-@model ProjectName.Pages.Account.LoginModel
+@model ProjectName.Pages.Account.Credential
 
 <div class="container">
-    <div class="row g-3 align-items-center">
-        <div class="col-auto">
-            <label for="inputPassword6" class="col-form-label">Password</label>
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="row g-3 align-items-center form-group">
+            <div class="col-3">
+                <label asp-for="UserName" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="UserName" class="form-control">
+            </div>
+            <div class="col-auto">
+                <span asp-validation-for="UserName" class="form-text">
+                </span>
+            </div>
         </div>
-        <div class="col-auto">
-            <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+
+        <div class="row g-3 align-items-center mt-2">
+            <div class="col-3">
+                <label asp-for="Password" class="col-form-label"></label>
+            </div>
+            <div class="col-5">
+                <input type="text" asp-for="Password" class="form-control">
+            </div>
+            <div class="col-auto">
+                <span asp-validation-for="Password" class="form-text">
+                </span>
+            </div>
         </div>
-        <div class="col-auto">
-            <span id="passwordHelpInline" class="form-text">
-                Must be 8-20 characters long.
-            </span>
+        <div class="row g-3 align-items-center mt-2">
+            <div class="col-3">
+                </div>
+            <div class="col-5">
+                <input type="submit" class="btn btn-primary" value="Submit" />
+            </div>
         </div>
-    </div>
-    <div class="row g-3 align-items-center">
-    <div class="col-auto">
-        <label for="inputPassword6" class="col-form-label">Password</label>
-    </div>
-    <div class="col-auto">
-        <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
-    </div>
-    <div class="col-auto">
-        <span id="passwordHelpInline" class="form-text">
-            Must be 8-20 characters long.
-        </span>
-    </div>
-</div>
+    </form>
 </div>
