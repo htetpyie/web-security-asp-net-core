@@ -1,31 +1,35 @@
 ﻿@page
-@model ProjectName.Pages.Account.Credential
+@model ProjectName.Pages.Account.LoginModel
+@{
+}
+
+
 
 <div class="container">
-    <form method="post" action="post">
+    <form method="post">
         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
         <div class="row g-3 align-items-center form-group">
             <div class="col-3">
-                <label asp-for="UserName" class="col-form-label"></label>
+                <label asp-for="Credential.UserName" class="col-form-label"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="UserName" class="form-control">
+                <input type="text" asp-for="Credential.UserName" class="form-control">
             </div>
             <div class="col-auto">
-                <span asp-validation-for="UserName" class="text-danger">
+                <span asp-validation-for="Credential.UserName" class="text-danger">
                 </span>
             </div>
         </div>
 
         <div class="row g-3 align-items-center mt-2">
             <div class="col-3">
-                <label asp-for="Password" class="col-form-label"></label>
+                <label asp-for="Credential.Password" class="col-form-label"></label>
             </div>
             <div class="col-5">
-                <input type="text" asp-for="Password" class="form-control">
+                <input type="text" asp-for="Credential.Password" class="form-control">
             </div>
             <div class="col-auto">
-                <span asp-validation-for="Password" class="text-danger">
+                <span asp-validation-for="Credential.Password" class="text-danger">
                 </span>
             </div>
         </div>

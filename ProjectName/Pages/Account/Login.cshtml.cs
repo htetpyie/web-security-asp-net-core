@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
 using System.Security.Claims;
 
 namespace ProjectName.Pages.Account
@@ -11,6 +9,7 @@ namespace ProjectName.Pages.Account
     {
         [BindProperty]
         public Credential Credential { get; set; }
+
         public void OnGet()
         {
         }
@@ -29,25 +28,16 @@ namespace ProjectName.Pages.Account
                     new Claim(ClaimTypes.Email, "admin@gmail.com"),
                 };
 
-                var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+                var identity = new ClaimsIdentity(claims, "CookieAuthTest3");
 
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync("MyCookieAuth", claimsPrincipal);
+                await HttpContext.SignInAsync("CookieAuthTest", claimsPrincipal);
+
 
                 return RedirectToPage("/Index");
             }
             return Page();
         }
-    }
-    public class Credential
-    {
-        [Required]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
     }
 }
