@@ -28,15 +28,20 @@ namespace ProjectName.Pages.Account
                     new Claim(ClaimTypes.Email, "admin@gmail.com"),
                     new Claim("Department","HR"),
                     new Claim("Admin","true"),
-                    new Claim("Manager","true")
+                    new Claim("Manager","true"),
+                    new Claim("EmploymentDate","2023-07-11")
                 };
 
                 var identity = new ClaimsIdentity(claims, "CookieAuthTest");
 
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync("CookieAuthTest", claimsPrincipal);
+                var authProp = new AuthenticationProperties
+                {
+                    IsPersistent = Credential.IsRemember,
+                };
 
+                await HttpContext.SignInAsync("CookieAuthTest", claimsPrincipal, authProp);
 
                 return RedirectToPage("/Index");
             }

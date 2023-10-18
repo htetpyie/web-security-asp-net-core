@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectName.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services
     options.Cookie.Name = "MyCookie";
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromSeconds(10);
 });
 
 //Inject authorization service
@@ -26,8 +29,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("HRManagerOnly",
         policy => policy
         .RequireClaim("Manager")
-        .RequireClaim("Department","HR"));
+        .RequireClaim("Department", "HR")
+        .Requirements.Add(new HRManagerProbationRequirement(3)));
 });
+
+builder.Services.AddSingleton<IAuthorizationHandler, HRManagerRequirementHandler>();
 
 var app = builder.Build();
 
