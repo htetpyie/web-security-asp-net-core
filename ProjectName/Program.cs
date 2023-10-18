@@ -5,12 +5,28 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder
-    .Services
+builder.Services
     .AddAuthentication("CookieAuthTest")
     .AddCookie("CookieAuthTest", options =>
 {
     options.Cookie.Name = "MyCookie";
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+//Inject authorization service
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOlny",
+        policy => policy.RequireClaim("Admin"));
+
+    options.AddPolicy("MustBelongToHRDepartment",
+        policy => policy.RequireClaim("Department", "HR"));
+
+    options.AddPolicy("HRManagerOnly",
+        policy => policy
+        .RequireClaim("Manager")
+        .RequireClaim("Department","HR"));
 });
 
 var app = builder.Build();
