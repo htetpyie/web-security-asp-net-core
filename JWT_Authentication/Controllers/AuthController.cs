@@ -36,7 +36,7 @@ namespace JWT_Authentication.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDTO request)
         {
-            if(user.Username != request.Username)
+            if (user.Username != request.Username)
             {
                 return BadRequest("User not found.");
             }
@@ -52,9 +52,11 @@ namespace JWT_Authentication.Controllers
 
         private string CreateToken(User user)
         {
-            var claims = new List<Claim> 
+            var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, "Admin"),
+
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
