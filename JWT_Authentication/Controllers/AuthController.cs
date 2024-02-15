@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
+//https://www.youtube.com/watch?v=v7q3pEK1EA0
 namespace JWT_Authentication.Controllers
 {
     [Route("api/[controller]")]
@@ -56,7 +57,6 @@ namespace JWT_Authentication.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Role, "Admin"),
-
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -66,7 +66,7 @@ namespace JWT_Authentication.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(10),
+                expires: DateTime.Now.AddSeconds(30),
                 signingCredentials: creds
                 );
 
