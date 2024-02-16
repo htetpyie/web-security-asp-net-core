@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
 //https://www.youtube.com/watch?v=v7q3pEK1EA0
+//https://www.youtube.com/watch?v=_F2hB4cWg-M
 namespace JWT_Authentication.Controllers
 {
     [Route("api/[controller]")]
@@ -66,11 +68,14 @@ namespace JWT_Authentication.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddSeconds(30),
+                expires: DateTime.Now.AddHours(1),
                 signingCredentials: creds
                 );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            var refreshToken = GenerateRefreshToken();
+            SetRefreshToken(refreshToken);
 
             return jwt;
         }
@@ -92,5 +97,28 @@ namespace JWT_Authentication.Controllers
             return computedPassword.SequenceEqual(passwordHash);
         }
 
+        private RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Expires = DateTime.Now.AddDays(7)
+            };
+            return refreshToken; 
+        }
+
+        private void SetRefreshToken(RefreshToken newRefreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = newRefreshToken.Expires,
+            };
+            Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
+
+            user.RefreshToken = newRefreshToken.Token;
+            user.TokenCreated = newRefreshToken.Created;
+            user.TokenExpires = newRefreshToken.Expires;
+        }
     }
 }
