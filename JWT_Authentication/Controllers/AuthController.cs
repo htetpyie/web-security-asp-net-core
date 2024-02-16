@@ -53,6 +53,27 @@ namespace JWT_Authentication.Controllers
             return Ok(token);
         }
 
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<string>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (!user.RefreshToken.Equals(refreshToken))
+            {
+                return Unauthorized("Invalid refresh token");
+            }
+            else if (user.TokenExpires < DateTime.Now)
+            {
+                return Unauthorized("Token expired!");
+            }
+
+            var token = CreateToken(user);
+
+            var newRefreshToken = GenerateRefreshToken();
+            SetRefreshToken(newRefreshToken);
+
+            return Ok(token);
+        }
+
         private string CreateToken(User user)
         {
             var claims = new List<Claim>
@@ -104,7 +125,7 @@ namespace JWT_Authentication.Controllers
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 Expires = DateTime.Now.AddDays(7)
             };
-            return refreshToken; 
+            return refreshToken;
         }
 
         private void SetRefreshToken(RefreshToken newRefreshToken)
