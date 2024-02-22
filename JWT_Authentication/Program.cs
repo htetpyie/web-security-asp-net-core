@@ -1,4 +1,6 @@
+using JWT_Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -39,6 +41,12 @@ builder.Services
             ValidateAudience = false
         };
     });
+builder.Services.AddSingleton<IAuthorizationHandler, CustomRoleRequirement>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CustomRole", policy => policy.AddRequirements(new CustomRoleRequirement()));
+});
 
 var app = builder.Build();
 

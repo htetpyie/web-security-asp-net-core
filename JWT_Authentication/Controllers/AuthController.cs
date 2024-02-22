@@ -32,6 +32,7 @@ namespace JWT_Authentication.Controllers
             user.Username = request.Username;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = salt;
+            user.UserRole = request.Role;
 
             return Ok(user);
         }
@@ -79,7 +80,7 @@ namespace JWT_Authentication.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Role, user.UserRole),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
