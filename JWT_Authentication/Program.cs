@@ -43,9 +43,11 @@ builder.Services
     });
 builder.Services.AddSingleton<IAuthorizationHandler, CustomRoleRequirement>();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("CustomRole", policy => policy.AddRequirements(new CustomRoleRequirement()));
+    options.AddPolicy("CustomRole", policy => policy.AddRequirements(new CustomRoleRequirement(new HttpContextAccessor())));
 });
 
 var app = builder.Build();

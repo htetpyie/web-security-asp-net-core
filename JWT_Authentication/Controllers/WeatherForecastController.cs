@@ -31,5 +31,12 @@ namespace JWT_Authentication.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("AccessAdmin2Only")]
+        [Authorize(Policy ="CustomRole")]
+        public IActionResult AccessOnlyAmin2()
+        {
+            return Ok("Access to Admin 2");
+        }
     }
 }
